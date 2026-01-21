@@ -7,7 +7,45 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link active" aria-current="page" routerLink="/">Inicio</a>
-        <a class="nav-link" routerLink="/login">Entrar</a>
+        @if (!authService.isAuthenticated()) {
+          <a class="nav-link" routerLink="/login">Entrar</a>
+        }
+      </div>
+
+      <!-- Right side user dropdown -->
+      <div class="navbar-nav ms-auto">
+        <div class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <!-- Inline SVG user icon to avoid external icon deps -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="me-2">
+              <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.5" />
+              <circle cx="12" cy="9" r="3" />
+              <path d="M6 19c0-3.5 4-5 6-5s6 1.5 6 5" fill="currentColor" />
+            </svg>
+            @if (authService.isAuthenticated()) {
+              <span>{{ authService.getUserData()?.full_name ? authService.getUserData()?.full_name : authService.getUserData()?.username }}</span>
+            } @else {
+              <span>Invitado</span>
+            }
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+            @if (authService.isAuthenticated()) {
+              <li class="px-3 py-2">
+                <div class="fw-semibold">
+                  {{ authService.getUserData()?.full_name ? authService.getUserData()?.full_name : authService.getUserData()?.username }}
+                </div>
+                <div class="text-muted small">
+                  {{ authService.getUserData()?.role }}
+                </div>
+              </li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" routerLink="/dashboard">Dashboard</a></li>
+              <li><a class="dropdown-item" href="#" (click)="authService.logout()">Salir</a></li>
+            } @else {
+              <li><a class="dropdown-item" routerLink="/login">Entrar</a></li>
+            }
+          </ul>
+        </div>
       </div>
     </div>
   </div>

@@ -10,6 +10,7 @@ require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/controllers/ModuleController.php';
 require_once __DIR__ . '/controllers/StudentController.php';
 require_once __DIR__ . '/controllers/AttendanceController.php';
+require_once __DIR__ . '/controllers/UserController.php';
 
 // CORS (dev)
 header('Access-Control-Allow-Origin: *');
@@ -80,6 +81,29 @@ try {
     if ($segments[0] === 'attendances' && isset($segments[1]) && is_numeric($segments[1])) {
         $attId = (int)$segments[1];
         if ($method === 'PUT') AttendanceController::update($attId);
+    }
+
+    // /api/users
+    if ($segments[0] === 'users') {
+        // /api/users/register
+        if (count($segments) === 2 && $segments[1] === 'register' && $method === 'POST') {
+            UserController::register();
+        }
+        // /api/users/login
+        if (count($segments) === 2 && $segments[1] === 'login' && $method === 'POST') {
+            UserController::login();
+        }
+        // /api/users
+        if (count($segments) === 1) {
+            if ($method === 'GET') UserController::list();
+        }
+        // /api/users/{id}
+        if (count($segments) === 2 && is_numeric($segments[1])) {
+            $id = (int)$segments[1];
+            if ($method === 'GET') UserController::get($id);
+            if ($method === 'PUT') UserController::update($id);
+            if ($method === 'DELETE') UserController::delete($id);
+        }
     }
 
     // If no route matched
