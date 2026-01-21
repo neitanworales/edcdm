@@ -1,0 +1,25 @@
+/* Global styles and layout helpers */
+
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
+/* Make the app root a column flex container so children can expand */
+app-root {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+/* Main content should grow to fill available space */
+main {
+	flex: 1 0 auto;
+}
+
+/* Ensure the footer doesn't overlap content */
+footer {
+	flex-shrink: 0;
+}
+
+/* You can import UIkit or other libs here if needed */

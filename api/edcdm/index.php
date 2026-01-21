@@ -17,13 +17,13 @@ $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $base = trim(str_replace(dirname($_SERVER['SCRIPT_NAME']), '', $path), '/');
 $segments = explode('/', $base);
 
-// Expect routes under /api/...
-if (empty($segments[0]) || $segments[0] !== 'api') {
-    jsonResponse(['error'=>'Invalid endpoint'], 404);
-}
+// Routes start directly (no /api prefix needed)
+// if (empty($segments[0]) || $segments[0] !== 'api') {
+//     jsonResponse(['error'=>'Invalid endpoint'], 404);
+// }
 
-// Shift 'api'
-array_shift($segments);
+// No need to shift segments
+// array_shift($segments);
 
 // Routing
 try {
