@@ -1,6 +1,11 @@
 <?php
 // Simple router entrypoint: backend/index.php
-require_once __DIR__ . '/db.php';
+
+// Mostrar errores (solo para desarrollo)
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+
 require_once __DIR__ . '/helpers.php';
 require_once __DIR__ . '/controllers/ModuleController.php';
 require_once __DIR__ . '/controllers/StudentController.php';
@@ -29,19 +34,21 @@ $segments = explode('/', $base);
 try {
     // /api/modules
     if ($segments[0] === 'modules') {
+        $moduleController = new ModuleController();
+
         if (count($segments) === 1) {
-            if ($method === 'GET') ModuleController::list();
-            if ($method === 'POST') ModuleController::create();
+            if ($method === 'GET') $moduleController->list();
+            if ($method === 'POST') $moduleController->create();
         }
         if (count($segments) >= 2 && is_numeric($segments[1])) {
             $id = (int)$segments[1];
             if (count($segments) === 2) {
-                if ($method === 'GET') ModuleController::get($id);
-                if ($method === 'PUT') ModuleController::update($id);
+                if ($method === 'GET') $moduleController->get($id);
+                if ($method === 'PUT') $moduleController->update($id);
             }
             // /api/modules/{id}/lessons
             if (isset($segments[2]) && $segments[2] === 'lessons' && $method === 'GET') {
-                ModuleController::lessons($id);
+                $moduleController->lessons($id);
             }
         }
     }
