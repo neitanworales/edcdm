@@ -1,4 +1,6 @@
 <?php
+// Mark request start for timing
+$GLOBALS['REQUEST_START'] = microtime(true);
 // Simple router entrypoint: backend/index.php
 
 // Mostrar errores (solo para desarrollo)
@@ -11,6 +13,7 @@ require_once __DIR__ . '/controllers/ModuleController.php';
 require_once __DIR__ . '/controllers/StudentController.php';
 require_once __DIR__ . '/controllers/AttendanceController.php';
 require_once __DIR__ . '/controllers/UserController.php';
+require_once __DIR__ . '/controllers/ChurchController.php';
 
 // CORS (dev)
 header('Access-Control-Allow-Origin: *');
@@ -51,6 +54,22 @@ try {
             if (isset($segments[2]) && $segments[2] === 'lessons' && $method === 'GET') {
                 $moduleController->lessons($id);
             }
+        }
+    }
+
+    // /api/churches
+    if ($segments[0] === 'churches') {
+        $churchController = new ChurchController();
+
+        if (count($segments) === 1) {
+            if ($method === 'GET') $churchController->list();
+            if ($method === 'POST') $churchController->create();
+        }
+        if (count($segments) === 2 && is_numeric($segments[1])) {
+            $id = (int)$segments[1];
+            if ($method === 'GET') $churchController->get($id);
+            if ($method === 'PUT') $churchController->update($id);
+            if ($method === 'DELETE') $churchController->delete($id);
         }
     }
 

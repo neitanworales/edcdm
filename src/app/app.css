@@ -1,0 +1,11 @@
+/* Make the app fill the viewport and stack header, content, footer */
+:host {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+/* Allow main content to grow and push footer down */
+main {
+	flex: 1 0 auto;
+}

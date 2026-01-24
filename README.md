@@ -1,108 +1,59 @@
-Escuela de Capacitación Discipulado y Ministerial — Sistema de Administración de Asistencias
+# Edcdm
 
-Descripción
------------
-Sistema para gestionar la asistencia de estudiantes, instructores y sesiones de formación de la "Escuela de Capacitación Discipulado y Ministerial". Provee herramientas para registrar asistencias, gestionar cursos y sesiones, generar reportes y exportar datos para control administrativo.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
 
-Stack del proyecto
-------------------
-- Frontend: Angular (TypeScript) — aplicación SPA gestionando interfaces de administrador, instructor y reportes.
-- Backend: PHP (se recomienda Laravel para acelerar desarrollo y manejar autenticación/migraciones, aunque puede usarse Slim o código PHP personalizado).
-- Base de datos: MySQL.
+## Development server
 
-Objetivos
----------
-- Registrar y consultar asistencias por sesión, curso y alumno.
-- Permitir a administradores e instructores marcar y revisar asistencias.
-- Generar reportes de asistencia y exportarlos (CSV/PDF).
-- Mantener un historial por alumno y por curso.
+To start a local development server, run:
 
-Características principales
----------------------------
-- Gestión de alumnos (crear/editar/eliminar/buscar).
-- Gestión de cursos y sesiones (fechas, duración, instructor responsable).
-- Registro de asistencia por sesión (presente, ausente, justificado).
-- Reportes por alumno, curso y rango de fechas.
-- Exportación de datos (CSV/PDF) y filtros avanzados.
-- Roles y permisos: Administrador, Instructor, Usuario (lectura limitada).
+```bash
+ng serve
+```
 
-Modelo de datos (propuesta)
---------------------------
-- `Student` (Alumno): id, nombre, apellidos, correo, teléfono, fecha_nacimiento, notas.
-- `Instructor`: id, nombre, apellidos, correo, teléfono.
-- `Course` (Curso): id, titulo, descripcion, duracion, categoria.
-- `Session` (Sesión): id, course_id, instructor_id, fecha_hora, ubicacion, duracion.
-- `Attendance` (Asistencia): id, session_id, student_id, estado (presente/ausente/justificado), marcado_por, timestamp, observaciones.
-- `Enrollment` (Inscripción): id, student_id, course_id, fecha_inscripcion, estado.
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-Instalación y arranque (guía rápida)
------------------------------------
-Requisitos mínimos: Node.js (16+), Angular CLI, PHP 8+, Composer, MySQL 5.7+/8.
+## Code scaffolding
 
-1) Frontend (Angular)
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-	- Instalar Angular CLI si no está instalado:
+```bash
+ng generate component component-name
+```
 
-		npm install -g @angular/cli
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-	- Crear o instalar dependencias del proyecto Angular:
+```bash
+ng generate --help
+```
 
-		npm install
+## Building
 
-	- Ejecutar servidor de desarrollo:
+To build the project run:
 
-		ng serve
+```bash
+ng build
+```
 
-2) Backend (PHP - ejemplo con Laravel)
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-	- Instalar dependencias:
+## Running unit tests
 
-		composer install
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
 
-	- Configurar archivo `.env` con la conexión a MySQL y claves.
+```bash
+ng test
+```
 
-	- Ejecutar migraciones y levantar servidor:
+## Running end-to-end tests
 
-		php artisan migrate
-		php artisan serve
+For end-to-end (e2e) testing, run:
 
-3) Base de datos (MySQL)
+```bash
+ng e2e
+```
 
-	- Crear la base de datos y configurar el usuario en MySQL.
-	- Ajustar `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` en `.env`.
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
-Ejemplos de uso rápido
-----------------------
-Marcar asistencia (curl):
+## Additional Resources
 
-	curl -X POST -H "Content-Type: application/json" -d '{"student_id":123,"estado":"presente"}' https://mi-backend/api/sessions/456/attendances
-
-Obtener reporte CSV:
-
-	curl -o reporte.csv "https://mi-backend/api/reports/attendances?from=2026-01-01&to=2026-01-31&format=csv"
-
-Especificación de API y esquema de BD
--------------------------------------
-Se incluye un `API.md` con endpoints propuestos y `schema.sql` con el esquema inicial de la base de datos.
-
-Consideraciones de privacidad
-----------------------------
-- Guardar y procesar datos personales cumpliendo la normativa aplicable (consentimiento, acceso restringido, retención mínima necesaria).
-- Restringir exportaciones y accesos sólo a roles autorizados.
-
-Contribuir
-----------
-- Abrir issues para errores o mejoras.
-- Crear pull requests con cambios bien documentados y pruebas cuando apliquen.
-
-Próximos pasos recomendados
---------------------------
-- Definir si usaremos Laravel (recomendado) u otra alternativa en PHP.
-- Crear migraciones y el esquema inicial en `schema.sql`.
-- Implementar endpoints básicos de CRUD para `Student`, `Course`, `Session` y `Attendance`.
-- Añadir autenticación y control de accesos por roles.
-
-Contacto
--------
-Para preguntas o coordinación del proyecto contactar a los responsables de la Escuela.
-
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

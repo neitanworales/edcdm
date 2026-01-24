@@ -3,11 +3,11 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
-    "analytics": "916245c5-e984-4f60-995d-131795e2707c"
+    "analytics": false
   },
   "newProjectRoot": "projects",
   "projects": {
-    "edcdm-app": {
+    "edcdm": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -67,10 +67,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "edcdm-app:build:production"
+              "buildTarget": "edcdm:build:production"
             },
             "development": {
-              "buildTarget": "edcdm-app:build:development"
+              "buildTarget": "edcdm:build:development"
             }
           },
           "defaultConfiguration": "development"

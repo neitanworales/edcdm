@@ -1,17 +1,18 @@
 :host {
-	display: block;
+    display: block;
+    /* Push footer to bottom within app's flex column */
+    margin-top: auto;
 }
 
 footer {
-	width: 100%;
+    width: 100%;
 }
 
-/* Use margin-top:auto when parent is a column flex container */
-.uk-section {
-	margin-top: auto;
-}
+/* Removed unused .uk-section rule */
 
 /* Small responsive tweaks */
 @media (max-width: 480px) {
-	.uk-logo { font-size: 1rem; }
+    .uk-logo {
+        font-size: 1rem;
+    }
 }

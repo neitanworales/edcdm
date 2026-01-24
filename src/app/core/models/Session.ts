@@ -1,6 +1,6 @@
-import { User } from "./User"
+import { AppUser } from "./AppUser"
 
 export class Session {
     token?: string
-    user?: User
+    user?: AppUser
 }

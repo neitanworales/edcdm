@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
-import { RouterLink } from "@angular/router";
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
-export class Home {
+export class Home  {
+
+
 
 }

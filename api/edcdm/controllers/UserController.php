@@ -93,7 +93,10 @@ class UserController {
                 ORDER BY created_at DESC
             ");
             $users = $stmt->fetchAll();
-            jsonResponse($users);
+            jsonResponse([
+                'message' => 'Users retrieved successfully',
+                'users' => $users
+            ]);
         } catch (PDOException $e) {
             jsonResponse(['error' => 'Database error', 'message' => $e->getMessage()], 500);
         }

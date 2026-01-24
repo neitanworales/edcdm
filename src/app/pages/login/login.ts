@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
-import { LogInDao } from '../../core/dao/LogInDao';
+import { LogInDao } from '../../core/api/LogInDao';
 
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule],
   templateUrl: './login.html',
   styleUrl: './login.css',
+  standalone: true,
 })
 export class Login {
-
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
@@ -21,16 +21,16 @@ export class Login {
 
   constructor(
     private logInDao: LogInDao,
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
-  login(){
+  login() {
     if (this.loginForm.valid) {
       const email = this.loginForm.value.email!;
       const password = this.loginForm.value.password!;
-      
-      
+
+
       this.logInDao.login(email, password).subscribe({
         next: (response) => {
           if (response.session?.token) {
