@@ -30,7 +30,9 @@ class StudentController {
         $stmt->execute([
             $d['first_name'], $d['last_name'], $d['email'] ?? null, $d['phone'] ?? null, $d['church_id'] ?? null, $d['date_of_birth'] ?? null, $d['notes'] ?? null
         ]);
-        jsonResponse(['id'=>$this->pdo->lastInsertId()],201);
+        jsonResponse([
+                'message' => 'Student created successfully',
+                'id'=>$this->db->getPdo()->lastInsertId()],201);
     }
 
     public function update($id) {

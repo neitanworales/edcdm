@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ChurchesDao } from '../../core/api/ChurchesDao';
 import { Church } from '../../core/models/Church';
+import { StudentDao } from '../../core/api/StudentDao';
+import { Student } from '../../core/models/Student';
 
 @Component({
   selector: 'app-register',
@@ -10,8 +12,11 @@ import { Church } from '../../core/models/Church';
   styleUrl: './register.css',
   standalone: true,
 })
-export class Register {
-  constructor(private churchesDao: ChurchesDao) {}
+export class Register implements OnInit {
+  constructor(
+    private churchesDao: ChurchesDao,
+    private studentDao: StudentDao
+  ) {}
 
   churches: Church[] = [];
   registerForm = new FormGroup({
@@ -19,16 +24,24 @@ export class Register {
     last_name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(150)] }),
     email: new FormControl<string>('', { validators: [Validators.email, Validators.maxLength(150)] }),
     phone: new FormControl<string>('', { validators: [Validators.pattern(/^[0-9+()\s-]{7,}$/), Validators.maxLength(50)] }),
-    church_id: new FormControl<number | null>(null),
-    date_of_birth: new FormControl<string>(''),
+    church_id: new FormControl<number> (0, {nonNullable: true, validators: [Validators.required]}),
+    date_of_birth: new FormControl<string | null>(null),
     notes: new FormControl<string>(''),
   });
 
   submit() {
     if (this.registerForm.valid) {
-      const payload = this.registerForm.value;
+      const payload = this.registerForm.value as Student;
       console.log('Register student payload', payload);
-      // TODO: Integrate with API (StudentController) via a Students service/DAO
+      this.studentDao.create(payload).subscribe({
+        next: (response) => {
+          console.log('Student registered successfully', response);
+          this.registerForm.reset();
+        },
+        error: (err) => {
+          console.error('Failed to register student', err);
+        }
+      }); 
     } else {
       this.registerForm.markAllAsTouched();
     }

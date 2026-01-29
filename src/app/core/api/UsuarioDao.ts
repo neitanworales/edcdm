@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { AppUser } from "../models/AppUser";
 import { Utils } from "./Utils";
-import { UserResponse } from "../models/UserResponse";
+import { UserResponse } from "../models/responses/UserResponse";
 
 @Injectable({ providedIn: 'root' })
 export class UserDao {

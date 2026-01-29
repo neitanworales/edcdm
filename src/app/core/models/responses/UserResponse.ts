@@ -1,4 +1,4 @@
-import { AppUser } from "./AppUser";
+import { AppUser } from "../AppUser";
 
 export class UserResponse {
     user!: AppUser;

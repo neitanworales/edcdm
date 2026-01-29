@@ -75,15 +75,16 @@ try {
 
     // /api/students
     if ($segments[0] === 'students') {
+        $studentController = new StudentController();
         if (count($segments) === 1) {
-            if ($method === 'GET') StudentController::list();
-            if ($method === 'POST') StudentController::create();
+            if ($method === 'GET') $studentController->list();
+            if ($method === 'POST') $studentController->create();
         }
         if (count($segments) === 2 && is_numeric($segments[1])) {
             $id = (int)$segments[1];
-            if ($method === 'GET') StudentController::get($id);
-            if ($method === 'PUT') StudentController::update($id);
-            if ($method === 'DELETE') StudentController::delete($id);
+            if ($method === 'GET') $studentController->get($id);
+            if ($method === 'PUT') $studentController->update($id);
+            if ($method === 'DELETE') $studentController->delete($id);
         }
     }
 

@@ -12,7 +12,15 @@ class ModuleController {
 
     public function list() {
         $stmt = $this->db->getPdo()->query('SELECT id, code, title, description, recommended_classes FROM modules ORDER BY id');
-        jsonResponse($stmt->fetchAll());
+        $modules = $stmt->fetchAll();
+
+        foreach($modules as &$module) {
+            $lessonStmt = $this->db->getPdo()->prepare('SELECT id, lesson_number, title, description, duration_minutes FROM module_lessons WHERE module_id = ? ORDER BY lesson_number');
+            $lessonStmt->execute([$module['id']]);
+            $module['lessons'] = $lessonStmt->fetchAll();
+        }
+
+        jsonResponse(['modules'=>$modules, 'message'=>'Modules retrieved successfully']);
     }
 
     public function get($id) {
@@ -20,7 +28,7 @@ class ModuleController {
         $stmt->execute([$id]);
         $row = $stmt->fetch();
         if (!$row) jsonResponse(['error'=>'Module not found'],404);
-        jsonResponse($row);
+        jsonResponse(['module'=>$row, 'message'=>'Module retrieved successfully']);
     }
 
     public  function create() {
