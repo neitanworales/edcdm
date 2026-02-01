@@ -7,7 +7,7 @@
             <div class="mb-3">
                 <select class="form-select" formControlName="church_id">
                     <option [ngValue]="null">Selecciona una iglesia</option>
-                    <option [ngValue]="0">Todos</option>
+                    <option [ngValue]="-1">Todos</option>
                     @for (c of churches; track c.id) {
                     <option [ngValue]="c.id">{{ c.name }}</option>
                     }
@@ -19,14 +19,14 @@
                 <option [ngValue]="null">Selecciona una modalidad</option>
                 <option [ngValue]="1">Presencial</option>
                 <option [ngValue]="2">En Línea</option>
-                <option [ngValue]="0">Ambos</option>
+                <option [ngValue]="-1">Ambos</option>
             </select>
         </div>
         <div class="mb-3">
             <select class="form-select" formControlName="module">
                 <option [ngValue]="null">Selecciona un módulo</option>
-                <option [ngValue]="0">Todos</option>
-                @for (c of modulesCombo; track c.id) {
+                <option [ngValue]="-1">Todos</option>
+                @for (c of modules; track c.id) {
                 <option [ngValue]="c.id">{{ c.title }}</option>
                 }
             </select>

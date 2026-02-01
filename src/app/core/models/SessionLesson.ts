@@ -1,24 +1,31 @@
-export interface Root_SessionLesson {
+export interface Root {
   module_id: number
   church_id: number
   modality_id: number
-  churches: Church_SessionLesson[]
+  churches: Church[]
   message: string
 }
 
-export interface Church_SessionLesson {
+export interface Church {
   church_id: number
   church: string
-  modalities: Modality_SessionLesson[]
+  modalities: Modality[]
 }
 
-export interface Modality_SessionLesson {
+export interface Modality {
   modality_id: number
   label: string
-  sessions: Session_SessionLesson[]
+  modules: Module[]
 }
 
-export interface Session_SessionLesson {
+export interface Module {
+  module_id: number
+  code: string
+  module_title: string
+  sessions: Session[]
+}
+
+export interface Session {
   session_id: number
   session_datetime: string
   lesson_id: number

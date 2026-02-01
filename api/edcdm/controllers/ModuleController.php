@@ -64,16 +64,21 @@ class ModuleController {
     }
 
     public function getSessions($moduleId, $chruchId, $modalityId) {
-        $chrches = $this->getChurchesFromViewSessions($chruchId);
+        $sqlChurches = "SELECT DISTINCT church_id, church FROM view_sessions ";
+        $paramsChurches = $this->getParamsSessions($moduleId, $chruchId, $modalityId);
+        $whereChurches = $this->getWhereSessions($moduleId, $chruchId, $modalityId);
+        $sqlChurches .= $whereChurches . " ORDER BY church_id";
+        
+        $stmt = $this->db->getPdo()->prepare($sqlChurches);
+        $stmt->execute($paramsChurches);
+        $chrches = $stmt->fetchAll(PDO::FETCH_ASSOC);    
+
         foreach($chrches as &$church) {
             $chruchId_ = (int)$church['church_id'];
-            $sql = "SELECT DISTINCT modality_id, label FROM view_sessions WHERE module_id = ? AND church_id = ?";
-            $params = [ $moduleId, $chruchId_ ];
-            if (!empty($modalityId)) {
-                $sql .= " AND modality_id = ?";
-                $params[] = $modalityId;
-            }
-            $sql .= " ORDER BY session_id";
+            $sql = "SELECT DISTINCT modality_id, label FROM view_sessions ";
+            $params = $this->getParamsSessions($moduleId, $chruchId_, $modalityId);
+            $where = $this->getWhereSessions($moduleId, $chruchId_, $modalityId);
+            $sql .= $where . " ORDER BY session_id";
 
             $stmt = $this->db->getPdo()->prepare($sql);
             $stmt->execute($params);
@@ -81,19 +86,21 @@ class ModuleController {
 
             foreach($modalities as &$modality) {
                 $modalityId_ = (int)$modality['modality_id'];
-                $moduleSql = "SELECT DISTINCT module_id,code, module_title FROM view_sessions 
-                WHERE module_id = ? 
-                AND church_id = ? 
-                AND modality_id = ? 
-                ORDER BY session_id";
-                $moduleParams = [ $moduleId, $chruchId_, $modalityId_ ];
-                $moduleStmt = $this->db->getPdo()->prepare($moduleSql);
-                $moduleStmt->execute($moduleParams);
-                $modality['modules'] = $moduleStmt->fetchAll(PDO::FETCH_ASSOC);
+                $modalitySql = "SELECT DISTINCT module_id,code, module_title FROM view_sessions ";
+                $modalityParams = $this->getParamsSessions($moduleId, $chruchId_, $modalityId_);
+                $modalityWhere = $this->getWhereSessions($moduleId, $chruchId_, $modalityId_);
+                $modalitySql .= $modalityWhere . " ORDER BY session_id";
+
+                $modalityStmt = $this->db->getPdo()->prepare($modalitySql);
+                $modalityStmt->execute($modalityParams);
+                $modality['modules'] = $modalityStmt->fetchAll(PDO::FETCH_ASSOC);
 
                 foreach($modality['modules'] as &$module) {
-                    $sessionSql = "SELECT session_id, session_datetime, lesson_id, lesson_number, lesson_title FROM view_sessions WHERE module_id = ? AND church_id = ? AND modality_id = ? ORDER BY session_id";
-                    $sessionParams = [ $module['module_id'], $chruchId_, $modalityId_ ];
+                    $sessionSql = "SELECT session_id, session_datetime, lesson_id, lesson_number, lesson_title FROM view_sessions ";
+                    $sessionWhere = $this->getWhereSessions($module['module_id'], $chruchId_, $modalityId_);
+                    $sessionSql .= $sessionWhere . " ORDER BY session_id";
+                    $sessionParams = $this->getParamsSessions($module['module_id'], $chruchId_, $modalityId_);
+
                     $sessionStmt = $this->db->getPdo()->prepare($sessionSql);
                     $sessionStmt->execute($sessionParams);
                     $module['sessions'] = $sessionStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -102,28 +109,78 @@ class ModuleController {
             $church['modalities'] = $modalities;
         }
         
-        jsonResponse(['sessions' => ['module_id' => (int)$moduleId,
+        jsonResponse(['response' => ['module_id' => (int)$moduleId,
             'church_id' => !empty($chruchId) ? (int)$chruchId : 0,
             'modality_id' => !empty($modalityId) ? (int)$modalityId : 0,
             'churches' => $chrches, 
             'message' => 'Sessions retrieved successfully']]);
     }
 
-    public function getChurchesFromViewSessions($chruchId){
-        $sql = "SELECT DISTINCT church_id, church FROM view_sessions WHERE church_id IS NOT NULL";
-        $params = [];
-        if (!empty($chruchId)) {
-            $sql .= " AND church_id = ?";
-            $params[] = $chruchId;
-        }
-        $sql .= " ORDER BY church_id";
-
-        if ($params) {
-            $stmt = $this->db->getPdo()->prepare($sql);
-            $stmt->execute($params);
+    public function getWhereSessions($moduleId, $chruchId, $modalityId){
+        if($moduleId == -1 && $chruchId == -1 && $modalityId == -1){
+            return "";
         } else {
-            $stmt = $this->db->getPdo()->query($sql);
+            if($chruchId != -1 && $modalityId == -1 && $moduleId == -1){
+                return "WHERE church_id = ?";
+            } else if ($chruchId != -1 && $modalityId != -1 && $moduleId == -1){
+                return "WHERE church_id = ? AND modality_id = ?";
+            } else if($chruchId != -1 && $modalityId == -1 && $moduleId != -1){
+                return "WHERE church_id = ? AND module_id = ?";
+            } else if($chruchId != -1 && $modalityId != -1 && $moduleId != -1){
+                return "WHERE church_id = ? AND module_id = ? AND modality_id = ?";
+            } else {
+                if($modalityId != -1 && $chruchId == -1 && $moduleId == -1){
+                    return "WHERE modality_id = ?";
+                } else if($modalityId != -1 && $chruchId != -1 && $moduleId == -1){
+                    return "WHERE church_id = ? AND modality_id = ?";
+                } else if($modalityId != -1 && $chruchId == -1 && $moduleId != -1){
+                    return "WHERE module_id = ? AND modality_id = ?";
+                } else {
+                    if($moduleId != -1 && $chruchId == -1 && $modalityId == -1){
+                        return "WHERE module_id = ?";
+                    } else if ($moduleId != -1 && $chruchId != -1 && $modalityId == -1){
+                        return "WHERE module_id = ? AND church_id = ?";
+                    } else if ($moduleId != -1 && $modalityId != -1 && $chruchId == -1 ){
+                        return "WHERE module_id = ? AND modality_id = ?";
+                    } else if ($moduleId != -1 && $modalityId != -1 && $chruchId != -1){
+                        return "WHERE module_id = ? AND church_id = ? AND modality_id = ?";
+                    }
+                }
+            }
         }
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getParamsSessions($moduleId, $chruchId, $modalityId){
+        if($moduleId == -1 && $chruchId == -1 && $modalityId == -1){
+            return [];
+        } else {
+            if($chruchId != -1 && $modalityId == -1 && $moduleId == -1){
+                return [$chruchId];
+            } else if ($chruchId != -1 && $modalityId != -1 && $moduleId == -1){
+                return [$chruchId, $modalityId];
+            } else if($chruchId != -1 && $modalityId == -1 && $moduleId != -1){
+                return [$chruchId, $moduleId];
+            } else if($chruchId != -1 && $modalityId != -1 && $moduleId != -1){
+                return [$chruchId, $moduleId, $modalityId];
+            } else {
+                if($modalityId != -1 && $chruchId == -1 && $moduleId == -1){
+                    return [$modalityId];
+                } else if($modalityId != -1 && $chruchId != -1 && $moduleId == -1){
+                    return [$chruchId, $modalityId];
+                } else if($modalityId != -1 && $chruchId == -1 && $moduleId != -1){
+                    return [$moduleId, $modalityId];
+                } else {
+                    if($moduleId != -1 && $chruchId == -1 && $modalityId == -1){
+                        return [$moduleId];
+                    } else if ($moduleId != -1 && $chruchId != -1 && $modalityId == -1){
+                        return [$moduleId, $chruchId];
+                    } else if ($moduleId != -1 && $modalityId != -1 && $chruchId == -1 ){
+                        return [$moduleId, $modalityId] ;
+                    } else if ($moduleId != -1 && $modalityId != -1 && $chruchId != -1){
+                        return [$moduleId, $chruchId, $modalityId];
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Module } from '../../core/models/Module';
-import { Root_SessionLesson } from '../../core/models/SessionLesson';
+import { Root } from '../../core/models/SessionLesson';
 
 @Component({
   selector: 'app-module-accordeon',
@@ -18,7 +18,7 @@ export class ModuleAccordeon implements OnInit {
   showLessons: boolean = false;
 
   @Input()
-  root?: Root_SessionLesson;
+  root?: Root;
 
   constructor(
     
