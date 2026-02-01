@@ -13,7 +13,7 @@ class AttendanceController {
     public function listBySession($sessionId) {
         $stmt = $this->db->getPdo()->prepare('SELECT a.id, a.session_id, a.student_id, a.status, a.observation, a.marked_at FROM attendances a WHERE a.session_id = ? ORDER BY a.student_id');
         $stmt->execute([$sessionId]);
-        jsonResponse($stmt->fetchAll());
+        jsonResponse($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     public function create($sessionId) {
@@ -28,7 +28,7 @@ class AttendanceController {
             $d['marked_by_user_id'] ?? null,
             $d['observation'] ?? null
         ]);
-        jsonResponse(['id'=>$pdo->lastInsertId()],201);
+        jsonResponse(['id'=>$this->db->getPdo()->lastInsertId()],201);
     }
 
     public function update($id) {

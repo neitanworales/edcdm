@@ -109,3 +109,92 @@ VALUES
 ON DUPLICATE KEY UPDATE title=VALUES(title), description=VALUES(description), duration_minutes=VALUES(duration_minutes);
 
 COMMIT;
+
+-- =============================
+-- Estudiantes aleatorios (20)
+-- Asegúrate de tener iglesias con ids 1..4 creadas.
+-- =============================
+START TRANSACTION;
+
+INSERT INTO students (first_name, last_name, email, phone, church_id, date_of_birth, notes) VALUES
+  ('Juan', 'Perez', 'juan.perez@example.com', '555-0101', 1, '1992-05-14', 'Estudiante activo'),
+  ('Maria', 'Lopez', 'maria.lopez@example.com', '555-0102', 2, '1995-11-03', 'Interesada en Propósito'),
+  ('Carlos', 'Gomez', 'carlos.gomez@example.com', '555-0103', 3, '1988-02-21', 'Participa en grupos'),
+  ('Ana', 'Martinez', 'ana.martinez@example.com', '555-0104', 4, '1999-07-30', 'Nueva inscripción'),
+  ('Luis', 'Hernandez', 'luis.hernandez@example.com', '555-0105', 1, '1985-12-12', 'Requiere seguimiento'),
+  ('Laura', 'Diaz', 'laura.diaz@example.com', '555-0106', 2, '1993-03-08', 'Prefiere modalidad online'),
+  ('Miguel', 'Santos', 'miguel.santos@example.com', '555-0107', 3, '2000-10-17', 'Asistencia regular'),
+  ('Sofia', 'Ramirez', 'sofia.ramirez@example.com', '555-0108', 4, '1991-06-25', 'Interesada en Carácter'),
+  ('Diego', 'Vargas', 'diego.vargas@example.com', '555-0109', 1, '1987-01-05', 'Buen desempeño'),
+  ('Camila', 'Castro', 'camila.castro@example.com', '555-0110', 2, '1998-09-19', 'Recién incorporada'),
+  ('Andres', 'Rojas', 'andres.rojas@example.com', '555-0111', 3, '1990-04-28', 'Solicita material adicional'),
+  ('Valeria', 'Navarro', 'valeria.navarro@example.com', '555-0112', 4, '1996-08-02', 'Participa en visión'),
+  ('Jorge', 'Flores', 'jorge.flores@example.com', '555-0113', 1, '1989-03-15', 'Disponible fines de semana'),
+  ('Paula', 'Torres', 'paula.torres@example.com', '555-0114', 2, '2001-12-01', 'Excelente compromiso'),
+  ('Ricardo', 'Mendoza', 'ricardo.mendoza@example.com', '555-0115', 3, '1986-07-11', 'Asiste presencial'),
+  ('Carolina', 'Silva', 'carolina.silva@example.com', '555-0116', 4, '1994-05-07', 'Solicita mentoría'),
+  ('Felipe', 'Ortega', 'felipe.ortega@example.com', '555-0117', 1, '1997-02-10', 'Interesado en recursos'),
+  ('Natalia', 'Paredes', 'natalia.paredes@example.com', '555-0118', 2, '1993-10-22', 'Seguimiento por email'),
+  ('Hector', 'Campos', 'hector.campos@example.com', '555-0119', 3, '1984-09-09', 'Horario nocturno'),
+  ('Daniela', 'Fuentes', 'daniela.fuentes@example.com', '555-0120', 4, '1999-01-27', 'Preferencia por mañana');
+
+COMMIT;
+
+-- =============================
+-- Estudiantes aleatorios (50 más)
+-- =============================
+START TRANSACTION;
+
+INSERT INTO students (first_name, last_name, email, phone, church_id, date_of_birth, notes) VALUES
+  ('Alejandro', 'Suarez', 'alejandro.suarez@example.com', '555-0201', 1, '1990-01-12', 'Alumno constante'),
+  ('Beatriz', 'Velasco', 'beatriz.velasco@example.com', '555-0202', 2, '1993-03-07', 'Prefiere online'),
+  ('Cristian', 'Nunez', 'cristian.nunez@example.com', '555-0203', 3, '1988-11-23', 'Interesado en identidad'),
+  ('Diana', 'Aguilar', 'diana.aguilar@example.com', '555-0204', 4, '1997-06-15', 'Buena participación'),
+  ('Eduardo', 'Ponce', 'eduardo.ponce@example.com', '555-0205', 1, '1985-09-29', 'Seguimiento por mentor'),
+  ('Fernanda', 'Araya', 'fernanda.araya@example.com', '555-0206', 2, '1999-12-03', 'Nueva en el grupo'),
+  ('Guillermo', 'Cortez', 'guillermo.cortez@example.com', '555-0207', 3, '1987-08-18', 'Participa en debates'),
+  ('Helena', 'Salas', 'helena.salas@example.com', '555-0208', 4, '1992-02-26', 'Interesada en visión'),
+  ('Ignacio', 'Bravo', 'ignacio.bravo@example.com', '555-0209', 1, '1994-05-04', 'Asistencia destacada'),
+  ('Julieta', 'Mora', 'julieta.mora@example.com', '555-0210', 2, '1996-07-21', 'Consulta material extra'),
+  ('Kevin', 'Rios', 'kevin.rios@example.com', '555-0211', 3, '1991-10-10', 'Compromiso alto'),
+  ('Liliana', 'Serrano', 'liliana.serrano@example.com', '555-0212', 4, '1989-04-02', 'Prefiere presencial'),
+  ('Manuel', 'Ibanez', 'manuel.ibanez@example.com', '555-0213', 1, '1986-03-13', 'Horario nocturno'),
+  ('Nerea', 'Carrasco', 'nerea.carrasco@example.com', '555-0214', 2, '1998-01-28', 'Interesada en propósito'),
+  ('Oscar', 'Tapia', 'oscar.tapia@example.com', '555-0215', 3, '1984-12-06', 'Participa activamente'),
+  ('Pamela', 'Zamora', 'pamela.zamora@example.com', '555-0216', 4, '1995-09-11', 'Solicitud de mentoría'),
+  ('Quique', 'Delgado', 'quique.delgado@example.com', '555-0217', 1, '1993-04-19', 'Buen dominio de temas'),
+  ('Rocio', 'Arce', 'rocio.arce@example.com', '555-0218', 2, '1990-06-08', 'Interesada en carácter'),
+  ('Sergio', 'Palacios', 'sergio.palacios@example.com', '555-0219', 3, '1997-11-14', 'Participación estable'),
+  ('Tamara', 'Reyes', 'tamara.reyes@example.com', '555-0220', 4, '1992-07-03', 'Requiere seguimiento'),
+  ('Ulises', 'Arias', 'ulises.arias@example.com', '555-0221', 1, '1988-02-09', 'Consulta recursos'),
+  ('Veronica', 'Figueroa', 'veronica.figueroa@example.com', '555-0222', 2, '1999-05-27', 'Excelente disposición'),
+  ('Walter', 'Camacho', 'walter.camacho@example.com', '555-0223', 3, '1987-01-31', 'Asiste con regularidad'),
+  ('Ximena', 'Bustos', 'ximena.bustos@example.com', '555-0224', 4, '1996-08-20', 'Interesada en legado'),
+  ('Yamil', 'Peña', 'yamil.pena@example.com', '555-0225', 1, '1990-10-05', 'Participa en grupos'),
+  ('Zoila', 'Quispe', 'zoila.quispe@example.com', '555-0226', 2, '1994-09-16', 'Se integra este mes'),
+  ('Abel', 'Sosa', 'abel.sosa@example.com', '555-0227', 3, '1993-12-24', 'Necesita material básico'),
+  ('Bianca', 'Vega', 'bianca.vega@example.com', '555-0228', 4, '1989-07-12', 'Buen avance'),
+  ('Cesar', 'Leiva', 'cesar.leiva@example.com', '555-0229', 1, '1998-03-02', 'Horario flexible'),
+  ('Daniela', 'Paredes', 'daniela.paredes2@example.com', '555-0230', 2, '1995-04-26', 'Interesada en recursos'),
+  ('Esteban', 'Villalba', 'esteban.villalba@example.com', '555-0231', 3, '1986-06-22', 'Asiste puntual'),
+  ('Florencia', 'Acosta', 'florencia.acosta@example.com', '555-0232', 4, '1997-02-14', 'Alta motivación'),
+  ('Gabriel', 'Huerta', 'gabriel.huerta@example.com', '555-0233', 1, '1992-11-09', 'Consulta dudas técnicas'),
+  ('Hortensia', 'Mendez', 'hortensia.mendez@example.com', '555-0234', 2, '1988-05-06', 'Participa ocasionalmente'),
+  ('Ismael', 'Navia', 'ismael.navia@example.com', '555-0235', 3, '1991-09-27', 'Compromiso medio'),
+  ('Jimena', 'Alvarado', 'jimena.alvarado@example.com', '555-0236', 4, '1999-01-18', 'Solicita guía'),
+  ('Karen', 'Lagos', 'karen.lagos@example.com', '555-0237', 1, '1996-12-30', 'Buena actitud'),
+  ('Lucia', 'Bermudez', 'lucia.bermudez@example.com', '555-0238', 2, '1987-07-08', 'Interesada en mayordomía'),
+  ('Matias', 'Sevilla', 'matias.sevilla@example.com', '555-0239', 3, '1994-01-25', 'Asistencia estable'),
+  ('Noelia', 'Prado', 'noelia.prado@example.com', '555-0240', 4, '1993-10-12', 'Solicita material'),
+  ('Omar', 'Garrido', 'omar.garrido@example.com', '555-0241', 1, '1985-04-01', 'Participa activamente'),
+  ('Paola', 'Bustamante', 'paola.bustamante@example.com', '555-0242', 2, '1998-06-19', 'Interesada en visión'),
+  ('Renzo', 'Quiroga', 'renzo.quiroga@example.com', '555-0243', 3, '1990-02-07', 'Alta disponibilidad'),
+  ('Silvia', 'Lemus', 'silvia.lemus@example.com', '555-0244', 4, '1997-09-04', 'Constante asistencia'),
+  ('Tomas', 'Renteria', 'tomas.renteria@example.com', '555-0245', 1, '1992-03-29', 'Puntual'),
+  ('Ursula', 'Esquivel', 'ursula.esquivel@example.com', '555-0246', 2, '1989-08-28', 'Requiere apoyo'),
+  ('Valentina', 'Correa', 'valentina.correa@example.com', '555-0247', 3, '1996-07-01', 'Buen desempeño'),
+  ('Wilson', 'Ibarra', 'wilson.ibarra@example.com', '555-0248', 4, '1988-10-15', 'Participa en talleres'),
+  ('Xiomara', 'Alonso', 'xiomara.alonso@example.com', '555-0249', 1, '1995-05-20', 'Preferencia por mañana'),
+  ('Yolanda', 'Galvez', 'yolanda.galvez@example.com', '555-0250', 2, '1991-12-27', 'Asistencia regular');
+
+COMMIT;

@@ -54,6 +54,12 @@ try {
             if (isset($segments[2]) && $segments[2] === 'lessons' && $method === 'GET') {
                 $moduleController->lessons($id);
             }
+            // /api/modules/{id}/sessions
+            if (isset($segments[2]) && $segments[2] === 'sessions' && $method === 'GET') {
+                $church_id = isset($_GET['church_id']) ? (int)$_GET['church_id'] : 0;
+                $modeality = isset($_GET['modeality']) ? (int)$_GET['modeality'] : 0;
+                $moduleController->getSessions($id, $church_id, $modeality);
+            }
         }
     }
 

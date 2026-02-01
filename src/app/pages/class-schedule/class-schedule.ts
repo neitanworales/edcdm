@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Module } from '../../core/models/Module';
 import { ModuleDao } from '../../core/api/ModuleDao';
 import { NgForOf } from "../../../../node_modules/@angular/common/types/_common_module-chunk";
+import { ModuleAccordeon } from "../../components/module-accordeon/module-accordeon";
 
 @Component({
   selector: 'app-class-schedule',
-  imports: [],
+  imports: [ModuleAccordeon],
   templateUrl: './class-schedule.html',
   styleUrl: './class-schedule.css',
   standalone: true

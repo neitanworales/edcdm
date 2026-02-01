@@ -92,7 +92,7 @@ class UserController {
                 FROM users 
                 ORDER BY created_at DESC
             ");
-            $users = $stmt->fetchAll();
+            $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
             jsonResponse([
                 'message' => 'Users retrieved successfully',
                 'users' => $users
@@ -111,7 +111,7 @@ class UserController {
                 FROM users 
                 WHERE id = ?
             ", [$id]);
-            $user = $stmt->fetch();
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if (!$user) {
                 jsonResponse(['error' => 'User not found'], 404);

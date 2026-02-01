@@ -11,13 +11,13 @@ class ChurchController {
 
     public function list() {
         $stmt = $this->db->getPdo()->query('SELECT id, name, address, contact_person, contact_email, contact_phone, created_at FROM churches ORDER BY id DESC');
-        jsonResponse($stmt->fetchAll());
+        jsonResponse($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     public function get($id) {
         $stmt = $this->db->getPdo()->prepare('SELECT id, name, address, contact_person, contact_email, contact_phone, created_at, updated_at FROM churches WHERE id = ?');
         $stmt->execute([$id]);
-        $row = $stmt->fetch();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$row) jsonResponse(['error'=>'Church not found'],404);
         jsonResponse($row);
     }

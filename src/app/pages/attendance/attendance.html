@@ -1,1 +1,39 @@
-<p>attendance works!</p>
+<div class="container">
+    <div class="row">
+        <h2>Asistencias</h2>
+    </div>
+    <form [formGroup]="filtersForm">
+        <div class="row">
+            <div class="mb-3">
+                <select class="form-select" formControlName="church_id">
+                    <option [ngValue]="null">Selecciona una iglesia</option>
+                    <option [ngValue]="0">Todos</option>
+                    @for (c of churches; track c.id) {
+                    <option [ngValue]="c.id">{{ c.name }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="mb-3">
+            <select class="form-select" formControlName="modeality">
+                <option [ngValue]="null">Selecciona una modalidad</option>
+                <option [ngValue]="1">Presencial</option>
+                <option [ngValue]="2">En Línea</option>
+                <option [ngValue]="0">Ambos</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <select class="form-select" formControlName="module">
+                <option [ngValue]="null">Selecciona un módulo</option>
+                <option [ngValue]="0">Todos</option>
+                @for (c of modulesCombo; track c.id) {
+                <option [ngValue]="c.id">{{ c.title }}</option>
+                }
+            </select>
+        </div>
+    </form>
+
+    <div class="row">
+        <app-module-accordeon [modules]="modules" [showLessons]="false" [root]="sessions"></app-module-accordeon>
+    </div>
+</div>

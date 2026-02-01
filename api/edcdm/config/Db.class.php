@@ -17,7 +17,9 @@ class Db
         try {
             $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
+            // Ensure results are associative arrays only (no numeric indexes)
+            $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+        } catch (PDOException $e) { 
             die('Error en la conexión: ' . $e->getMessage());
         }
     }

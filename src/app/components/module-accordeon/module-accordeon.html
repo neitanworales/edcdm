@@ -1,0 +1,67 @@
+<div class="accordion" id="accordionExample">
+    @for (module of modules; track module.id) {
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse-' + module!.id" [attr.aria-controls]="'collapse-' + module!.id">
+                {{ module!.title }}
+            </button>
+        </h2>
+        <div [id]="'collapse-' + module!.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            @if (showLessons) {
+            <span>{{ module!.description }}</span>
+            <ol class="list-group list-group-numbered">
+                @for (lesson of module!.lessons; track lesson.id) {
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{lesson.title}}</div>
+                        {{lesson.description}}
+                    </div>
+                    <span class="badge text-bg-primary rounded-pill">14</span>
+                </li>
+                }
+            </ol>
+            } @else  {
+                @for (church of root?.churches; track $index) {
+                    <h1> Iglesia: {{ church!.church }} </h1>
+                    @for (modality of church!.modalities; track $index) {
+                        <h2> Modalidad: {{ modality!.label }} </h2>
+                        
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Inscritos</th>
+                                    @for(session of modality!.sessions; track session.session_id;  let idx = $index) {
+                                    <th scope="col">{{session.lesson_title}}</th>
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                <tr>
+                                    <th scope="row">1</th>
+                                    <td>Mark</td>
+                                    <td>Otto</td>
+                                    <td>@mdo</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">2</th>
+                                    <td>Jacob</td>
+                                    <td>Thornton</td>
+                                    <td>@fat</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">3</th>
+                                    <td>John</td>
+                                    <td>Doe</td>
+                                    <td>@social</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                }
+            }
+        </div>
+    </div>
+    }
+</div>

@@ -12,13 +12,13 @@ class StudentController {
 
     public function list() {
         $stmt = $this->db->getPdo()->query('SELECT id, first_name, last_name, email, phone, church_id FROM students ORDER BY id');
-        jsonResponse($stmt->fetchAll());
+        jsonResponse($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 
     public function get($id) {
         $stmt = $this->db->getPdo()->prepare('SELECT id, first_name, last_name, email, phone, church_id, date_of_birth, notes FROM students WHERE id = ?');
         $stmt->execute([$id]);
-        $row = $stmt->fetch();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$row) jsonResponse(['error'=>'Student not found'],404);
         jsonResponse($row);
     }

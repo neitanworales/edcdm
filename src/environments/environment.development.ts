@@ -1,3 +1,3 @@
 export const environment = {
-    api: 'http://edcdm.local/api/edcdm/',
+    api: 'https://edcdm.local/api/edcdm/',
 };
