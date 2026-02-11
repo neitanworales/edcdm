@@ -66,6 +66,7 @@ export class Attendance implements OnInit {
 
   loadSessions(moduleId: number, church_id: number, modeality: number): void {
     this.sessionsDao.list(moduleId, church_id, modeality).subscribe(response => {
+    //this.sessionsDao.list(1, 1, 2).subscribe(response => {
       this.sessions = response.response;
       
     });

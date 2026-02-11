@@ -2,6 +2,6 @@ import { Student } from "../Student";
 import { DefaultResponse } from "./DefaultResponse";
 
 export class StudentResponse extends DefaultResponse {
-    students!: Student;
+    students!: Student[];
     student!: Student;
 }

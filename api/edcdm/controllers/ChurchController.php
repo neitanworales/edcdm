@@ -10,7 +10,7 @@ class ChurchController {
     }
 
     public function list() {
-        $stmt = $this->db->getPdo()->query('SELECT id, name, address, contact_person, contact_email, contact_phone, created_at FROM churches ORDER BY id DESC');
+        $stmt = $this->db->getPdo()->query('SELECT id, name, address, contact_person, contact_email, contact_phone, created_at FROM churches ORDER BY id');
         jsonResponse($stmt->fetchAll(PDO::FETCH_ASSOC));
     }
 

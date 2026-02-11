@@ -86,10 +86,10 @@ class ModuleController {
 
             foreach($modalities as &$modality) {
                 $modalityId_ = (int)$modality['modality_id'];
-                $modalitySql = "SELECT DISTINCT module_id,code, module_title FROM view_sessions ";
+                $modalitySql = "SELECT DISTINCT module_id,code, module_title, cohort_id FROM view_sessions ";
                 $modalityParams = $this->getParamsSessions($moduleId, $chruchId_, $modalityId_);
                 $modalityWhere = $this->getWhereSessions($moduleId, $chruchId_, $modalityId_);
-                $modalitySql .= $modalityWhere . " ORDER BY session_id";
+                $modalitySql .= $modalityWhere . " ORDER BY module_id";
 
                 $modalityStmt = $this->db->getPdo()->prepare($modalitySql);
                 $modalityStmt->execute($modalityParams);
@@ -98,12 +98,42 @@ class ModuleController {
                 foreach($modality['modules'] as &$module) {
                     $sessionSql = "SELECT session_id, session_datetime, lesson_id, lesson_number, lesson_title FROM view_sessions ";
                     $sessionWhere = $this->getWhereSessions($module['module_id'], $chruchId_, $modalityId_);
-                    $sessionSql .= $sessionWhere . " ORDER BY session_id";
+                    $sessionSql .= $sessionWhere . " ORDER BY lesson_number";
                     $sessionParams = $this->getParamsSessions($module['module_id'], $chruchId_, $modalityId_);
-
                     $sessionStmt = $this->db->getPdo()->prepare($sessionSql);
                     $sessionStmt->execute($sessionParams);
-                    $module['sessions'] = $sessionStmt->fetchAll(PDO::FETCH_ASSOC);
+                    $sessiones = $sessionStmt->fetchAll(PDO::FETCH_ASSOC);
+                    $module['sessions'] = $sessiones;
+                }
+
+                foreach($modality['modules'] as &$module) {
+                    $studentsSQL = "SELECT distinct student_id, first_name, last_name, phone FROM view_enrollments_attendances 
+                    WHERE module_id = ?
+                    AND cohort_id = ?
+                    AND modality_id = ?
+                    AND session_id IS NOT NULL 
+                    AND attendance_id IS NOT NULL
+                    ORDER BY first_name, last_name";
+                    
+                    $studentsStmt = $this->db->getPdo()->prepare($studentsSQL);
+                    $studentsStmt->execute([$module['module_id'], $module['cohort_id'], $modalityId_]);
+                    $students = $studentsStmt->fetchAll(PDO::FETCH_ASSOC);
+                    $module['students'] = $students; 
+
+                    foreach($module['students'] as &$student) {
+                        $attendancesSQL = "SELECT * FROM view_enrollments_attendances 
+                        WHERE module_id = ?
+                        AND cohort_id = ?
+                        AND modality_id = ?
+                        AND student_id = ?
+                        AND session_id IS NOT NULL 
+                        AND attendance_id IS NOT NULL 
+                        ORDER BY first_name,last_name, lesson_id";
+                        $attendancesStmt = $this->db->getPdo()->prepare($attendancesSQL);
+                        $attendancesStmt->execute([$module['module_id'], $module['cohort_id'], $modalityId_, $student['student_id']]);
+                        $student['attendances'] = $attendancesStmt->fetchAll(PDO::FETCH_ASSOC);
+                    }
+                       
                 }
             }
             $church['modalities'] = $modalities;

@@ -22,7 +22,9 @@ export interface Module {
   module_id: number
   code: string
   module_title: string
+  cohort_id: number
   sessions: Session[]
+  students: student[]
 }
 
 export interface Session {
@@ -31,4 +33,28 @@ export interface Session {
   lesson_id: number
   lesson_number: number
   lesson_title: string
+}
+
+export interface student {
+  student_id?: number;
+  first_name?: string;
+  last_name?: string;
+  phone?: string;
+  attendances: attendances[]
+}
+
+export interface attendances {
+  attendance_id?: number;
+  student_id?: number;
+  first_name?: string;
+  last_name?: string;
+  session_id?: number;
+  status?: AttendanceStatus;
+}
+
+export enum AttendanceStatus {
+  Presente = 'presente',
+  Ausente = 'ausente',
+  Justificado = 'justificado',
+  Pendiente = '-',
 }

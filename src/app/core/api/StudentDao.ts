@@ -33,4 +33,12 @@ export class StudentDao {
   delete(id: number): Observable<DefaultResponse> {
     return this.http.delete<DefaultResponse>(environment.api + "students/" + id, { headers: this.utils.getHeaders() });
   }
+
+  getUnassigned(churchId: number): Observable<StudentResponse> {
+    return this.http.get<StudentResponse>(environment.api + "students/unassigned/" + churchId, { headers: this.utils.getHeaders() });
+  }
+
+  addStudentsToCohort(student_id: number, cohortId: number): Observable<DefaultResponse> {
+    return this.http.post<DefaultResponse>(environment.api + "/attendances/generate", { student_id: student_id, cohort_id: cohortId }, { headers: this.utils.getHeaders() });
+  }
 }

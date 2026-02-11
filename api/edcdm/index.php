@@ -60,6 +60,13 @@ try {
                 $modeality = isset($_GET['modeality']) ? (int)$_GET['modeality'] : -1;
                 $moduleController->getSessions($id, $church_id, $modeality);
             }
+            // /api/modules/{id}/students
+            if (isset($segments[2]) && $segments[2] === 'students' && $method === 'GET') {
+                $church_id = isset($_GET['church_id']) ? (int)$_GET['church_id'] : null;
+                $modeality = isset($_GET['modeality']) ? (int)$_GET['modeality'] : null;
+                $studentsController = new StudentController();
+                $studentsController->listByModuleChurchModality($id, $church_id, $modeality);
+            }
         }
     }
 
@@ -92,21 +99,50 @@ try {
             if ($method === 'PUT') $studentController->update($id);
             if ($method === 'DELETE') $studentController->delete($id);
         }
+        if (count($segments) === 3 && $segments[1] === 'church' && is_numeric($segments[2])) {
+            $churchId = (int)$segments[2];
+            if ($method === 'GET') $studentController->listByChurch($churchId);
+        }
+        // /api/students/unassigned/{churchId}
+        if (count($segments) === 3 && $segments[1] === 'unassigned' && is_numeric($segments[2])) {
+            $churchId = (int)$segments[2];
+            if ($method === 'GET') $studentController->getUnassignedStudent($churchId);
+        }
     }
 
     // /api/sessions/{id}/attendances
     if ($segments[0] === 'sessions' && isset($segments[1]) && is_numeric($segments[1])) {
         $sessionId = (int)$segments[1];
+        $attendanceController = new AttendanceController();
         if (isset($segments[2]) && $segments[2] === 'attendances') {
-            if ($method === 'GET') AttendanceController::listBySession($sessionId);
-            if ($method === 'POST') AttendanceController::create($sessionId);
+            if ($method === 'GET') $attendanceController->listBySession($sessionId);
+            if ($method === 'POST') $attendanceController->create($sessionId);
         }
     }
 
     // /api/attendances/{id}
     if ($segments[0] === 'attendances' && isset($segments[1]) && is_numeric($segments[1])) {
         $attId = (int)$segments[1];
-        if ($method === 'PUT') AttendanceController::update($attId);
+        $attendanceController = new AttendanceController();
+        if ($method === 'PUT' && (!isset($segments[2]) || $segments[2] !== 'status')) {
+            $attendanceController->update($attId);
+        } 
+        //api/attendances/{id}/status/{newStatus}
+        if ($method === 'PUT' && isset($segments[2]) && $segments[2] === 'status') {
+            $newStatus = $segments[3];
+            $attendanceController->changeStatus($attId, $newStatus);
+        }
+        
+    }
+
+    //api/attendances/generate
+    if( $segments[0] === 'attendances' && $segments[1] === 'generate'){
+        if($method === 'POST'){
+            $d = getJsonInput();
+            if (empty($d['student_id']) || empty($d['cohort_id'])) jsonResponse(['error'=>'student_id and cohort_id required'],400);
+            $attendanceController = new AttendanceController();
+            $attendanceController->generateAttendances($d['student_id'], $d['cohort_id']);
+        }
     }
 
     // /api/users

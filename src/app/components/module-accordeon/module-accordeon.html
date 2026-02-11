@@ -1,83 +1,119 @@
 @if (showLessons) {
 <div class="accordion" id="accordionExample">
     @for (module of modules; track module.id) {
-        <div class="accordion-item">
-            <h2 class="accordion-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                    [attr.data-bs-target]="'#collapse-' + module!.id" [attr.aria-controls]="'collapse-' + module!.id">
-                    {{ module!.title }}
-                </button>
-            </h2>
-            <div [id]="'collapse-' + module!.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                <span>{{ module!.description }}</span>
-                <ol class="list-group list-group-numbered">
-                    @for (lesson of module!.lessons; track lesson.id) {
-                    <li class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <div class="fw-bold">{{lesson.title}}</div>
-                            {{lesson.description}}
-                        </div>
-                        <span class="badge text-bg-primary rounded-pill">14</span>
-                    </li>
-                    }
-                </ol>
-            </div>
+    <div class="accordion-item">
+        <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse-' + module!.id" [attr.aria-controls]="'collapse-' + module!.id">
+                {{ module!.title }}
+            </button>
+        </h2>
+        <div [id]="'collapse-' + module!.id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+            <span>{{ module!.description }}</span>
+            <ol class="list-group list-group-numbered">
+                @for (lesson of module!.lessons; track lesson.id) {
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{lesson.title}}</div>
+                        {{lesson.description}}
+                    </div>
+                    <span class="badge text-bg-primary rounded-pill">14</span>
+                </li>
+                }
+            </ol>
         </div>
+    </div>
     }
 </div>
 } @else {
-    <div class="mb-3">
-        @for (church of root?.churches; track $index) {
-            <h1> Iglesia: {{ church!.church }} </h1>
-            @for (modality of church!.modalities; track $index) {
-                <h2> Modalidad: {{ modality!.label }} </h2>
-                <div class="accordion" id="accordionExample">
-                    @for(module of modality.modules; track module.module_id) {
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    [attr.data-bs-target]="'#collapse-'+church!.church_id +'-'+ modality!.modality_id + '-' + module!.module_id" [attr.aria-controls]="'collapse-' + church!.church_id +'-'+ modality!.modality_id + '-' + module!.module_id">
-                                    {{ module!.module_title }}
-                                </button>
-                            </h2>
-                            <div [id]="'collapse-'+church!.church_id +'-'+ modality!.modality_id + '-' + module!.module_id" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                                
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Inscritos</th>
-                                            @for (session of module!.sessions; track session.session_id) {
-                                                <th scope="col">{{session.lesson_title}}</th>
-                                            }
-                                        </tr>
-                                    </thead>
-                                    <tbody class="table-group-divider">
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td>@mdo</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>John</td>
-                                            <td>Doe</td>
-                                            <td>@social</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    }
-                </div>
-            }
+<div class="mb-3">
+    @for (church of root?.churches; track $index) {
+    <h1> Iglesia: {{ church!.church }} </h1>
+    @for (modality of church!.modalities; track $index) {
+    <h2> Modalidad: {{ modality!.label }} </h2>
+    <div class="accordion" id="accordionExample">
+        @for(module of modality.modules; track module.module_id) {
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    [attr.data-bs-target]="'#collapse-'+church!.church_id +'-'+ modality!.modality_id + '-' + module!.module_id"
+                    [attr.aria-controls]="'collapse-' + church!.church_id +'-'+ modality!.modality_id + '-' + module!.module_id">
+                    {{ module!.module_title }}
+                </button>
+            </h2>
+            <div [id]="'collapse-'+church!.church_id +'-'+ modality!.modality_id + '-' + module!.module_id"
+                class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <button type="button" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                    (click)="getUnassignedStudents(church!.church_id, module.cohort_id)">Agregar Alumno</button>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Inscritos</th>
+                            @for (session of module!.sessions; track session.session_id) {
+                            <th scope="col">{{session.lesson_title}}</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                        @for(student of module!.students; track student.student_id; let i = $index) {
+                        <tr>
+                            <th scope="row">{{i + 1}}</th>
+                            <td>{{student.first_name}} {{student.last_name}}</td>
+                            @for (session of module!.sessions; track session.session_id) {
+                            <td>
+                                @for(attendance of student.attendances; track attendance.attendance_id) {
+                                @if(attendance.session_id === session.session_id) {
+                                <app-status-attendance [status]="attendance.status" [attendanceId]="attendance.attendance_id"></app-status-attendance>
+                                }
+                                }
+                            </td>
+                            }
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
         }
     </div>
+    }
+    }
+</div>
 }
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form (submit)="agregar(); $event.preventDefault()">
+                    <ul class="list-group">
+                        @for(student of unassignedStudents; track student.id) {
+                        <li class="list-group-item">
+                            <input
+                                class="form-check-input me-1"
+                                type="checkbox"
+                                [checked]="isStudentSelected(student.id)"
+                                (change)="onStudentToggle(student.id, $any($event.target).checked)"
+                                id="{{student.id}}_Checkbox">
+                            <label class="form-check-label" for="{{student.id}}_Checkbox">{{student.first_name}} {{student.last_name}}</label>
+                        </li>
+                        }
+                    </ul>
+
+                    <button type="submit" style="display:none" aria-hidden="true"></button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="agregar()">Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>

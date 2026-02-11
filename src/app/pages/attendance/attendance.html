@@ -34,6 +34,6 @@
     </form>
 
     <div class="row">
-        <app-module-accordeon [modules]="modules" [showLessons]="false" [root]="sessions"></app-module-accordeon>
+        <app-module-accordeon [modules]="modules" [showLessons]="false" [root]="sessions" (ejecutarUpdate)="loadSessions(selectedModuleId!,selectedChurchId!,selectedModeality!)"></app-module-accordeon>
     </div>
 </div>
