@@ -8,11 +8,15 @@ import { Usuarios } from './pages/usuarios/usuarios';
 import { authGuard } from './core/guards/auth.guard';
 import { Attendance } from './pages/attendance/attendance';
 import { ClassSchedule } from './pages/class-schedule/class-schedule';
+import { UserRegister } from './pages/user-register/user-register';
+import { PassswordRecovery } from './pages/passsword-recovery/passsword-recovery';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: Home },
     { path: 'login', component: Login },
+    { path: 'user-register', component: UserRegister },
+    { path: 'password-recovery', component: PassswordRecovery },
     { path: 'dashboard', component: Dashboard, canActivate: [authGuard] },
     { path: 'register', component: Register, canActivate: [authGuard] },
     { path: 'churches', component: Churches, canActivate: [authGuard] },

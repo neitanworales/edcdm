@@ -8,27 +8,29 @@
             <form [formGroup]="loginForm" (ngSubmit)="login()" class="p-4 p-md-5 border rounded-3 bg-body-tertiary">
                 <div class="form-floating mb-3">
                     <input type="email" class="form-control" id="floatingInput" formControlName="email"
-                        placeholder="name@example.com" [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+                        placeholder="name@example.com"
+                        [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
                     <label for="floatingInput">Email address</label>
                     @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-                        <div class="invalid-feedback">
-                            @if (loginForm.get('email')?.errors?.['required']) {
-                                El email es requerido
-                            }
-                            @if (loginForm.get('email')?.errors?.['email']) {
-                                Ingresa un email válido
-                            }
-                        </div>
+                    <div class="invalid-feedback">
+                        @if (loginForm.get('email')?.errors?.['required']) {
+                        El email es requerido
+                        }
+                        @if (loginForm.get('email')?.errors?.['email']) {
+                        Ingresa un email válido
+                        }
+                    </div>
                     }
                 </div>
                 <div class="form-floating mb-3">
                     <input type="password" class="form-control" id="floatingPassword" formControlName="password"
-                        placeholder="Password" [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+                        placeholder="Password"
+                        [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
                     <label for="floatingPassword">Password</label>
                     @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-                        <div class="invalid-feedback">
-                            La contraseña es requerida
-                        </div>
+                    <div class="invalid-feedback">
+                        La contraseña es requerida
+                    </div>
                     }
                 </div>
                 <div class="checkbox mb-3">
@@ -37,9 +39,16 @@
                     </label>
                 </div>
                 @if (loginError) {
-                    <label class="text-danger mb-3 d-block">{{ loginError }}</label>
+                <label class="text-danger mb-3 d-block">{{ loginError }}</label>
                 }
-                <button class="w-100 btn btn-lg btn-primary" type="submit" [disabled]="loginForm.invalid">Iniciar sesión</button>
+                <button class="w-100 btn btn-lg btn-primary" type="submit" [disabled]="loginForm.invalid">Iniciar
+                    sesión</button>
+                <div class="my-4">
+                    <p>¿Olvidaste tu contraseña? <a [routerLink]="['/password-recovery']">Recupérala aquí</a>.</p>
+                </div>
+                <div class="my-4">
+                    <p>¿No tienes una cuenta? <a [routerLink]="['/user-register']">Regístrate aquí</a>.</p>
+                </div>
                 <hr class="my-4">
                 <small class="text-body-secondary">Al iniciar sesión, aceptas los términos de uso.</small>
             </form>

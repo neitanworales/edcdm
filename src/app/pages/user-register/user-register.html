@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <form class="container mt-4" [formGroup]="form" (ngSubmit)="save()">
+                <h2 class="mb-4">Registrar usuario</h2>
+
+                <div class="mb-3">
+                    <label class="form-label">Nombre completo</label>
+                    <input type="text" class="form-control" formControlName="full_name" />
+                    @if(form.get('full_name')?.touched && form.get('full_name')?.invalid) {
+                    <div class="text-danger">
+                        El nombre completo es requerido
+                    </div>
+                    }
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" formControlName="email" />
+                    @if(form.get('email')?.value.trim() == '') {
+                    <div class="text-danger">
+                        Correo electrónico es requerido
+                    </div>
+                    }
+                    @if(form.get('email')?.touched && form.get('email')?.hasError('emailExists')) {
+                    <div class="text-danger">
+                        Este email ya está registrado
+                    </div>
+                    } 
+                    @if(form.get('email')?.pending) {
+                    <div class="text-info">
+                        Validando correo electrónico...
+                    </div>
+                    }
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" formControlName="password" />
+                    @if(form.get('password')?.touched && form.get('password')?.invalid) {
+                    <div class="text-danger">
+                        La contraseña es requerida
+                    </div>
+                    }
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Confirmar Password</label>
+                    <input type="password" class="form-control" formControlName="confirmPassword" />
+                    @if(form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid) {
+                    <div class="text-danger">
+                        La confirmación de la contraseña es requerida
+                    </div>
+                    }
+                </div>
+
+                <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Guardar</button>
+            </form>
+        </div>
+    </div>
+</div>

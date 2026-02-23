@@ -1,0 +1,27 @@
+<div class="mat-elevation-z8">
+    <table mat-table [dataSource]="datasource" class="mat-elevation-z8">
+        <!-- First Name Column -->
+        <ng-container matColumnDef="first_name">
+            <th mat-header-cell *matHeaderCellDef> First Name </th>
+            <td mat-cell *matCellDef="let student"> {{student.first_name}} </td>
+        </ng-container>
+
+        @for (session of sessions; track session.session_id) {
+        <ng-container [matColumnDef]="session.lesson_title">
+            <th mat-header-cell *matHeaderCellDef> {{session.lesson_title}} </th>
+            <td mat-cell *matCellDef="let student">
+                @if(getAttendanceStatus(student, session)) {
+                <app-status-attendance [status]="student.attendance.status"
+                    [attendanceId]="student.attendance.attendance_id"></app-status-attendance>
+                } @else{
+                    <span>No registrado</span>
+                }
+            </td>
+        </ng-container>
+        }
+
+        <tr mat-header-row *matHeaderRowDef="['first_name', ...shownColumns]"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['first_name', ...shownColumns];"></tr>
+
+    </table>
+</div>

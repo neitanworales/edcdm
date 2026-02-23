@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Module } from '../../core/models/Module';
-import { Root } from '../../core/models/SessionLesson';
+import { Root, student } from '../../core/models/SessionLesson';
 import { StudentDao } from '../../core/api/StudentDao';
 import { Student } from '../../core/models/Student';
 import { StatusAttendance } from "../status-attendance/status-attendance";
+import { TableAttendances } from "../table-attendances/table-attendances";
 
 @Component({
   selector: 'app-module-accordeon',
@@ -74,7 +75,7 @@ export class ModuleAccordeon implements OnInit {
     const selectedIds = this.getSelectedStudentIds();
     console.log("Agregar button clicked. Cohort ID:", this.cohortId, "Selected student IDs:", selectedIds);
     // Aquí puedes agregar la lógica para asignar los estudiantes seleccionados al módulo
-    for(const studentId of selectedIds) {
+    for (const studentId of selectedIds) {
       this.studentDao.addStudentsToCohort(studentId, this.cohortId!).subscribe({
         next: (response) => {
           console.log(`Student ${studentId} added to cohort ${this.cohortId}:`, response);

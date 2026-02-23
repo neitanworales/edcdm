@@ -64,7 +64,8 @@
                             <td>
                                 @for(attendance of student.attendances; track attendance.attendance_id) {
                                 @if(attendance.session_id === session.session_id) {
-                                <app-status-attendance [status]="attendance.status" [attendanceId]="attendance.attendance_id"></app-status-attendance>
+                                <app-status-attendance [status]="attendance.status"
+                                    [attendanceId]="attendance.attendance_id"></app-status-attendance>
                                 }
                                 }
                             </td>
@@ -73,6 +74,9 @@
                         }
                     </tbody>
                 </table>
+
+                <!--app-table-attendances [students]="module!.students" [sessions]="module!.sessions"></app-table-attendances-->
+
             </div>
         </div>
         }
@@ -96,13 +100,12 @@
                     <ul class="list-group">
                         @for(student of unassignedStudents; track student.id) {
                         <li class="list-group-item">
-                            <input
-                                class="form-check-input me-1"
-                                type="checkbox"
+                            <input class="form-check-input me-1" type="checkbox"
                                 [checked]="isStudentSelected(student.id)"
                                 (change)="onStudentToggle(student.id, $any($event.target).checked)"
                                 id="{{student.id}}_Checkbox">
-                            <label class="form-check-label" for="{{student.id}}_Checkbox">{{student.first_name}} {{student.last_name}}</label>
+                            <label class="form-check-label" for="{{student.id}}_Checkbox">{{student.first_name}}
+                                {{student.last_name}}</label>
                         </li>
                         }
                     </ul>
@@ -112,7 +115,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="agregar()">Agregar</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal"
+                    (click)="agregar()">Agregar</button>
             </div>
         </div>
     </div>

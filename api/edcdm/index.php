@@ -155,6 +155,10 @@ try {
         if (count($segments) === 2 && $segments[1] === 'login' && $method === 'POST') {
             UserController::login();
         }
+        // /api/users/check-email
+        if (count($segments) === 2 && $segments[1] === 'check-email' && $method === 'POST') {
+            UserController::checkEmail();
+        }
         // /api/users
         if (count($segments) === 1) {
             if ($method === 'GET') UserController::list();

@@ -190,4 +190,21 @@ class UserController {
             jsonResponse(['error' => 'Database error', 'message' => $e->getMessage()], 500);
         }
     }
+
+    public static function checkEmail() {
+        $input = json_decode(file_get_contents('php://input'), true);
+        if (empty($input['email'])) {
+            jsonResponse(['error' => 'Email is required'], 400);
+        }
+
+        try {
+            $db = Db::getInstance();
+            $stmt = $db->execute("SELECT id FROM users WHERE username = ?", [$input['email']]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            jsonResponse(['exists' => $user ? true : false, 'message' => $user ? 'Email already exists' : 'Email is available'],200);
+        } catch (PDOException $e) {
+            jsonResponse(['error' => 'Database error', 'message' => $e->getMessage()], 500);
+        }
+    }
 }
