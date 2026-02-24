@@ -12,13 +12,21 @@ class StudentController {
 
     public function list() {
         $stmt = $this->db->getPdo()->query('SELECT id, first_name, last_name, email, phone, church_id FROM students ORDER BY id');
-        jsonResponse($stmt->fetchAll(PDO::FETCH_ASSOC));
+        $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($students as &$student) {
+            $stmt = $this->db->getPdo()->prepare('SELECT id, name FROM churches WHERE id = ?');
+            $stmt->execute([$student['church_id']]);
+            $student['church'] = $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+        jsonResponse(['students' => $students, 'message' => 'Students retrieved successfully']);
     }
 
     public function listByChurch($churchId) {
         $stmt = $this->db->getPdo()->prepare('SELECT id, first_name, last_name, email, phone, church_id FROM students WHERE church_id = ? ORDER BY id');
         $stmt->execute([$churchId]);
-        jsonResponse($stmt->fetchAll(PDO::FETCH_ASSOC));
+        jsonResponse(['students' => $stmt->fetchAll(PDO::FETCH_ASSOC), 'message' => 'Students retrieved successfully']);
     }
 
     public function listByModuleChurchModality($moduleId, $churchId, $modalityId) {

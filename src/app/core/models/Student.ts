@@ -1,3 +1,5 @@
+import { Church } from "./Church";
+
 export interface Student {
     id: number;
     first_name: string;
@@ -7,4 +9,5 @@ export interface Student {
     church_id?: number;
     date_of_birth?: string;
     notes?: string;
+    church?: Church
 }

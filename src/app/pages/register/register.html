@@ -1,14 +1,57 @@
 <div class="container py-4">
-    <div class="row">
-        <div class="col-lg-8 mx-auto">
-            <h1 class="mb-4">Registro de Estudiante</h1>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link {{ displayRegistrados === 'block' ? 'active' : '' }}" aria-current="page" (click)="cambiarOpcion(1)">Registrados</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ displaRegisterForm === 'block' ? 'active' : '' }}" aria-current="page" (click)="cambiarOpcion(2)">Registro</a>
+        </li>
+    </ul>
+
+    <div class="row card" [style]="{display: displayRegistrados}">
+        <div class="col-lg-8 mx-auto mb-3 card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Iglesia</th>
+                        <th>Fecha de nacimiento</th>
+                        <th>Notas</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (s of students; track s.id; let i = $index) {
+                    <tr>
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ s.first_name }} {{ s.last_name }}</td>
+                        <td>{{ s.email }}</td>
+                        <td>{{ s.phone }}</td>
+                        <td>{{ s.church?.name }}</td>
+                        <td>{{ s.date_of_birth | date }}</td>
+                        <td>{{ s.notes }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil-square"></i></button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row card" [style]="{display: displaRegisterForm}">
+        <div class="col-lg-8 mx-auto mb-3 card-body">
             <form [formGroup]="registerForm" (ngSubmit)="submit()" class="needs-validation" novalidate>
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label">Nombre</label>
                         <input type="text" class="form-control" formControlName="first_name" placeholder="Nombre">
                         @if (registerForm.get('first_name')?.invalid && registerForm.get('first_name')?.touched) {
-                            <div class="text-danger small mt-1">El nombre es obligatorio.</div>
+                        <div class="text-danger small mt-1">El nombre es obligatorio.</div>
                         }
                     </div>
 
@@ -16,23 +59,25 @@
                         <label class="form-label">Apellido</label>
                         <input type="text" class="form-control" formControlName="last_name" placeholder="Apellido">
                         @if (registerForm.get('last_name')?.invalid && registerForm.get('last_name')?.touched) {
-                            <div class="text-danger small mt-1">El apellido es obligatorio.</div>
+                        <div class="text-danger small mt-1">El apellido es obligatorio.</div>
                         }
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Email</label>
-                        <input type="email" class="form-control" formControlName="email" placeholder="correo@ejemplo.com">
+                        <input type="email" class="form-control" formControlName="email"
+                            placeholder="correo@ejemplo.com">
                         @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
-                            <div class="text-danger small mt-1">Ingresa un email válido.</div>
+                        <div class="text-danger small mt-1">Ingresa un email válido.</div>
                         }
                     </div>
 
                     <div class="col-md-6">
                         <label class="form-label">Teléfono</label>
-                        <input type="text" class="form-control" formControlName="phone" placeholder="Ej: +52 55 1234 5678">
+                        <input type="text" class="form-control" formControlName="phone"
+                            placeholder="Ej: +52 55 1234 5678">
                         @if (registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched) {
-                            <div class="text-danger small mt-1">Formato de teléfono inválido.</div>
+                        <div class="text-danger small mt-1">Formato de teléfono inválido.</div>
                         }
                     </div>
 
@@ -41,7 +86,7 @@
                         <select class="form-select" formControlName="church_id">
                             <option [ngValue]="null">Selecciona una iglesia</option>
                             @for (c of churches; track c.id) {
-                                <option [ngValue]="c.id">{{ c.name }}</option>
+                            <option [ngValue]="c.id">{{ c.name }}</option>
                             }
                         </select>
                     </div>
@@ -53,13 +98,15 @@
 
                     <div class="col-12">
                         <label class="form-label">Notas</label>
-                        <textarea class="form-control" rows="3" formControlName="notes" placeholder="Observaciones opcionales"></textarea>
+                        <textarea class="form-control" rows="3" formControlName="notes"
+                            placeholder="Observaciones opcionales"></textarea>
                     </div>
                 </div>
 
                 <div class="mt-4 d-flex gap-2">
                     <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Registrar</button>
-                    <button type="reset" class="btn btn-outline-secondary" (click)="registerForm.reset()">Limpiar</button>
+                    <button type="reset" class="btn btn-outline-secondary"
+                        (click)="registerForm.reset()">Limpiar</button>
                 </div>
             </form>
         </div>
