@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { AppUser } from '../../core/models/AppUser';
 import { LogInDao } from '../../core/api/LogInDao';
@@ -13,10 +13,15 @@ import { Observable, of, map, delay } from 'rxjs';
 export class UserRegister {
   form: FormGroup;
   user: AppUser | null = null;
+  success: boolean = false;
+  error: boolean = false;
+  messageSuccess: string = 'Usuario registrado exitosamente';
+  messageError: string = 'Error al registrar el usuario';
 
   constructor(
     private fb: FormBuilder,
-    private logInDao: LogInDao
+    private logInDao: LogInDao,
+    private changeDetector: ChangeDetectorRef
   ) {
     this.form = this.fb.group({
       full_name: [''],
@@ -36,7 +41,7 @@ export class UserRegister {
     
     return this.logInDao.checkEmailExists(control.value).pipe(
       map(response => response.exists ? { emailExists: true } : null),
-      delay(500) 
+      delay(200) 
     );
   }
 
@@ -57,9 +62,17 @@ export class UserRegister {
     this.logInDao.register(this.user).subscribe({
       next: (response) => {
         console.log('User registered successfully', response);
+        this.success = true;
+        this.error = false;
+        this.form.reset();
+        this.changeDetector.detectChanges();
       },
       error: (error) => {
         console.error('Error registering user', error);
+        this.success = false;
+        this.error = true;
+        this.messageError = error.error?.message || 'Error al registrar el usuario';
+        this.changeDetector.detectChanges();
       }
     });
   }

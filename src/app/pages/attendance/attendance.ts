@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Church } from '../../core/models/Church';
 import { ChurchesDao } from '../../core/api/ChurchesDao';
@@ -36,7 +36,8 @@ export class Attendance implements OnInit {
   constructor(
     private churchDao: ChurchesDao,
     private moduleDao: ModuleDao,
-    private sessionsDao: SessionsDao
+    private sessionsDao: SessionsDao,
+    private changeDetector: ChangeDetectorRef
   ) {}  
 
   ngOnInit(): void {
@@ -55,12 +56,14 @@ export class Attendance implements OnInit {
   loadChurches(): void {
     this.churchDao.list().subscribe((churches) => {
       this.churches = churches;
+      this.changeDetector.detectChanges();
     });
   }
 
   loadModules(): void {
     this.moduleDao.list().subscribe((response) => {
       this.modules = response.modules;
+      this.changeDetector.detectChanges();
     });
   }
 
@@ -68,7 +71,7 @@ export class Attendance implements OnInit {
     this.sessionsDao.list(moduleId, church_id, modeality).subscribe(response => {
     //this.sessionsDao.list(1, 1, 2).subscribe(response => {
       this.sessions = response.response;
-      
+      this.changeDetector.detectChanges();
     });
   }
 }

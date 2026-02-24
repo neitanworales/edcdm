@@ -7,8 +7,8 @@ class UserController {
         $input = json_decode(file_get_contents('php://input'), true);
         
         // Validaciones
-        if (empty($input['username']) || empty($input['password'])) {
-            jsonResponse(['error' => 'Username and password are required'], 400);
+        if (empty($input['email']) || empty($input['password'])) {
+            jsonResponse(['error' => 'Email and password are required'], 400);
         }
         
         // Hash de la contraseña
@@ -20,7 +20,7 @@ class UserController {
                 INSERT INTO users (username, password_hash, full_name, role) 
                 VALUES (?, ?, ?, ?)
             ", [
-                $input['username'],
+                $input['email'],
                 $passwordHash,
                 $input['full_name'] ?? null,
                 $input['role'] ?? 'viewer'

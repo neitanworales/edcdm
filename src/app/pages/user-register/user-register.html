@@ -4,9 +4,9 @@
             <form class="container mt-4" [formGroup]="form" (ngSubmit)="save()">
                 <h2 class="mb-4">Registrar usuario</h2>
 
-                <div class="mb-3">
-                    <label class="form-label">Nombre completo</label>
-                    <input type="text" class="form-control" formControlName="full_name" />
+                <div class="mb-3 form-floating">
+                    <input type="text" class="form-control" formControlName="full_name" id="fullname"/>
+                    <label class="form-label" for="fullname">Nombre completo</label>
                     @if(form.get('full_name')?.touched && form.get('full_name')?.invalid) {
                     <div class="text-danger">
                         El nombre completo es requerido
@@ -14,9 +14,9 @@
                     }
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Correo Electrónico</label>
-                    <input type="email" class="form-control" formControlName="email" />
+                <div class="mb-3 form-floating">
+                    <input type="email" class="form-control" formControlName="email" id="email"/>
+                    <label class="form-label" for="email">Correo Electrónico</label>
                     @if(form.get('email')?.value.trim() == '') {
                     <div class="text-danger">
                         Correo electrónico es requerido
@@ -26,7 +26,7 @@
                     <div class="text-danger">
                         Este email ya está registrado
                     </div>
-                    } 
+                    }
                     @if(form.get('email')?.pending) {
                     <div class="text-info">
                         Validando correo electrónico...
@@ -34,9 +34,9 @@
                     }
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" formControlName="password" />
+                <div class="mb-3 form-floating">
+                    <input type="password" class="form-control" formControlName="password" id="password"/>
+                    <label class="form-label" for="password">Password</label>
                     @if(form.get('password')?.touched && form.get('password')?.invalid) {
                     <div class="text-danger">
                         La contraseña es requerida
@@ -44,17 +44,33 @@
                     }
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Confirmar Password</label>
-                    <input type="password" class="form-control" formControlName="confirmPassword" />
+                <div class="mb-3 form-floating">
+                    <input type="password" class="form-control" formControlName="confirmPassword" id="confirmPassword"/>
+                    <label class="form-label" for="confirmPassword">Confirmar Password</label>
                     @if(form.get('confirmPassword')?.touched && form.get('confirmPassword')?.invalid) {
                     <div class="text-danger">
                         La confirmación de la contraseña es requerida
                     </div>
                     }
+                    @if(form.get('confirmPassword')?.touched &&
+                    form.get('confirmPassword')?.hasError('passwordMismatch')) {
+                    <div class="text-danger">
+                        Las contraseñas no coinciden
+                    </div>
+                    }
                 </div>
 
-                <button type="submit" class="btn btn-primary" [disabled]="form.invalid">Guardar</button>
+                <button type="submit" class="btn btn-primary mb-3" [disabled]="form.invalid">Guardar</button>
+                @if(success) {
+                <div class="alert alert-success mb-3" role="alert">
+                    {{messageSuccess}}
+                </div>
+                }
+                @if(error) {
+                <div class="alert alert-danger mb-3" role="alert">
+                    {{messageError}}
+                </div>
+                }
             </form>
         </div>
     </div>
